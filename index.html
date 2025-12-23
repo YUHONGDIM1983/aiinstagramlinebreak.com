@@ -1,0 +1,990 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Caption Formatter | AI Instagram Line Break & Text Tools</title>
+    <meta name="description" content="The ultimate toolkit for perfect social media captions. Use our AI Instagram Formatter to fix line breaks, our Line Break Remover to clean text, and get AI-powered suggestions instantly.">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background-color: #f9fafb;
+            color: #1f2937;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        header {
+            background: #ffffff;
+            border-bottom: 1px solid #e5e7eb;
+            padding: 16px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #6366f1;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, #6366f1 0%, #818cf8 100%);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+        }
+
+        /* Main Content */
+        main {
+            padding: 40px 20px;
+        }
+
+        /* Tab Navigation */
+        .tabs-container {
+            background: #ffffff;
+            border-radius: 16px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            margin-bottom: 32px;
+        }
+
+        .tabs {
+            display: flex;
+            border-bottom: 1px solid #e5e7eb;
+            overflow-x: auto;
+        }
+
+        .tab {
+            flex: 1;
+            min-width: 200px;
+            padding: 20px 24px;
+            background: #ffffff;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            color: #6b7280;
+            transition: all 0.2s ease;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .tab:hover:not(.tab-disabled) {
+            background: #f9fafb;
+            color: #1f2937;
+        }
+
+        .tab.tab-active {
+            color: #6366f1;
+            background: #f9fafb;
+        }
+
+        .tab.tab-active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: #6366f1;
+        }
+
+        .tab-disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .tab-badge {
+            background: #f3f4f6;
+            color: #9ca3af;
+            font-size: 0.75rem;
+            padding: 2px 8px;
+            border-radius: 12px;
+        }
+
+        /* Tab Content */
+        .tab-content {
+            display: none;
+            padding: 32px;
+        }
+
+        .tab-content.tab-content-active {
+            display: block;
+        }
+
+        /* Tool Headers */
+        .tool-header {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .tool-header h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 8px;
+        }
+
+        .tool-header p {
+            color: #6b7280;
+            font-size: 1.1rem;
+        }
+
+        /* Instagram Formatter - Side by Side Layout */
+        .formatter-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 32px;
+        }
+
+        .input-section, .output-section {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .section-label {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .input-box, .output-box {
+            flex: 1;
+            min-height: 300px;
+            padding: 20px;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-family: inherit;
+            line-height: 1.8;
+            resize: vertical;
+            background: #ffffff;
+            color: #1f2937;
+            transition: border-color 0.2s ease;
+        }
+
+        .input-box:focus {
+            outline: none;
+            border-color: #6366f1;
+        }
+
+        .output-box {
+            overflow-y: auto;
+            white-space: pre-wrap;
+        }
+
+        .copy-button {
+            margin-top: 16px;
+            padding: 16px 32px;
+            background: #6366f1;
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .copy-button:hover {
+            background: #4f46e5;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        .copy-button:active {
+            transform: translateY(0);
+        }
+
+        .copy-button.copied {
+            background: #10b981;
+        }
+
+        /* AI Assistant Section */
+        .ai-assistant {
+            margin-top: 32px;
+            padding: 24px;
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(139, 92, 246, 0.1) 100%);
+            border: 2px solid #6366f1;
+            border-radius: 16px;
+        }
+
+        .ai-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .ai-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #6366f1 0%, #818cf8 100%);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .ai-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #1f2937;
+        }
+
+        .ai-content {
+            display: none;
+        }
+
+        .ai-content.ai-content-active {
+            display: block;
+        }
+
+        .ai-loading {
+            display: none;
+            text-align: center;
+            padding: 32px;
+        }
+
+        .ai-loading.ai-loading-active {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #e5e7eb;
+            border-top-color: #6366f1;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .ai-suggestions-grid {
+            display: grid;
+            gap: 16px;
+        }
+
+        .ai-card {
+            background: #ffffff;
+            padding: 16px;
+            border-radius: 12px;
+            border: 1px solid #e5e7eb;
+        }
+
+        .ai-card h3 {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .ai-card p {
+            color: #6b7280;
+            font-size: 0.95rem;
+        }
+
+        .emoji-suggestions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .emoji-chip {
+            background: #f9fafb;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .emoji-chip:hover {
+            background: #f3f4f6;
+            transform: scale(1.1);
+        }
+
+        .readability-score {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .score-circle {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: white;
+        }
+
+        .cta-suggestion {
+            background: linear-gradient(135deg, #6366f1 0%, #818cf8 100%);
+            color: white;
+            padding: 12px 16px;
+            border-radius: 12px;
+            font-weight: 600;
+        }
+
+        /* Line Break Remover - Top/Bottom Layout */
+        .remover-layout {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .remover-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 24px;
+            padding: 20px;
+            background: #f9fafb;
+            border-radius: 12px;
+        }
+
+        .option-checkbox {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+        }
+
+        .option-checkbox input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+
+        .option-checkbox label {
+            cursor: pointer;
+            font-weight: 500;
+            color: #1f2937;
+        }
+
+        /* FAQ Section */
+        .faq-section {
+            margin-top: 48px;
+            background: #ffffff;
+            border-radius: 16px;
+            padding: 32px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .faq-section h2 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 24px;
+            text-align: center;
+        }
+
+        .faq-grid {
+            display: grid;
+            gap: 16px;
+        }
+
+        .faq-item {
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .faq-question {
+            width: 100%;
+            padding: 20px;
+            background: #ffffff;
+            border: none;
+            text-align: left;
+            font-size: 1rem;
+            font-weight: 600;
+            color: #1f2937;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .faq-question::after {
+            content: '▼';
+            font-size: 0.75rem;
+            transition: transform 0.2s ease;
+        }
+
+        .faq-item.active .faq-question::after {
+            transform: rotate(180deg);
+        }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease, padding 0.3s ease;
+        }
+
+        .faq-item.active .faq-answer {
+            max-height: 500px;
+            padding: 0 20px 20px;
+        }
+
+        .faq-answer p {
+            color: #6b7280;
+            line-height: 1.7;
+        }
+
+        /* Footer */
+        footer {
+            background: #ffffff;
+            border-top: 1px solid #e5e7eb;
+            padding: 32px 20px;
+            text-align: center;
+        }
+
+        footer p {
+            color: #6b7280;
+            font-size: 0.95rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .formatter-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .tabs {
+                flex-direction: column;
+            }
+
+            .tab {
+                min-width: auto;
+            }
+
+            .tool-header h1 {
+                font-size: 1.5rem;
+            }
+
+            .ai-assistant {
+                padding: 16px;
+            }
+
+            .remover-options {
+                flex-direction: column;
+                gap: 12px;
+            }
+        }
+
+        /* Utility Classes */
+        .hidden {
+            display: none !important;
+        }
+
+        .fade-in {
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <a href="/" class="logo">
+                    <div class="logo-icon">✨</div>
+                    Caption Formatter
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            <div class="tabs-container">
+                <div class="tabs">
+                    <button class="tab tab-active" data-tab="instagram">
+                        ✨ Instagram Formatter
+                    </button>
+                    <button class="tab" data-tab="remover">
+                        ✂️ Line Break Remover
+                    </button>
+                    <button class="tab tab-disabled">
+                        ✍️ AI Writer
+                        <span class="tab-badge">Soon</span>
+                    </button>
+                </div>
+
+                <!-- Instagram Formatter Tab -->
+                <div class="tab-content tab-content-active" id="instagram-tab">
+                    <div class="tool-header">
+                        <h1>AI Instagram Caption & Bio Formatter</h1>
+                        <p>Paste your text below and we'll preserve your perfect formatting</p>
+                    </div>
+
+                    <div class="formatter-layout">
+                        <div class="input-section">
+                            <label class="section-label" for="instagram-input">Your Text</label>
+                            <textarea
+                                id="instagram-input"
+                                class="input-box"
+                                placeholder="Paste your perfectly formatted text here to fix line breaks...
+
+Example:
+✨ Welcome to my profile!
+I love sharing:
+• Travel photos
+• Food adventures
+• Daily inspiration
+
+Follow for more! 🚀"
+                            ></textarea>
+                        </div>
+
+                        <div class="output-section">
+                            <label class="section-label">Formatted Preview</label>
+                            <div id="instagram-output" class="output-box"></div>
+                            <button id="copy-instagram-output" class="copy-button">
+                                <span>📋</span>
+                                <span>Copy Formatted Text</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="ai-assistant" id="ai-assistant">
+                        <div class="ai-header">
+                            <div class="ai-icon">🤖</div>
+                            <div>
+                                <div class="ai-title">AI Assistant</div>
+                                <p style="color: #6b7280; font-size: 0.9rem;">Get smart suggestions for your caption</p>
+                            </div>
+                        </div>
+
+                        <div class="ai-loading" id="ai-loading">
+                            <div class="spinner"></div>
+                            <p style="color: #6b7280;">Analyzing your caption...</p>
+                        </div>
+
+                        <div class="ai-content" id="ai-content">
+                            <div class="ai-suggestions-grid">
+                                <div class="ai-card">
+                                    <h3>✨ AI Emoji Suggestions</h3>
+                                    <div class="emoji-suggestions" id="emoji-suggestions">
+                                        <span class="emoji-chip">✨</span>
+                                        <span class="emoji-chip">🚀</span>
+                                        <span class="emoji-chip">💫</span>
+                                        <span class="emoji-chip">⭐</span>
+                                        <span class="emoji-chip">🔥</span>
+                                    </div>
+                                </div>
+
+                                <div class="ai-card">
+                                    <h3>📊 Readability Score</h3>
+                                    <div class="readability-score">
+                                        <div class="score-circle" id="readability-score">85</div>
+                                        <div>
+                                            <p style="font-weight: 600; color: #1f2937;">Excellent!</p>
+                                            <p style="color: #6b7280; font-size: 0.9rem;">Your caption is easy to read</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="ai-card">
+                                    <h3>🚀 AI Call-to-Action</h3>
+                                    <div class="cta-suggestion" id="cta-suggestion">
+                                        "Double tap if you agree! 💪"
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Line Break Remover Tab -->
+                <div class="tab-content" id="remover-tab">
+                    <div class="tool-header">
+                        <h1>Quickly Remove Line Breaks & Extra Spaces</h1>
+                        <p>Clean up messy text from PDFs, websites, and other sources</p>
+                    </div>
+
+                    <div class="remover-layout">
+                        <div class="input-section">
+                            <label class="section-label" for="remover-input">Messy Text</label>
+                            <textarea
+                                id="remover-input"
+                                class="input-box"
+                                style="min-height: 200px;"
+                                placeholder="Paste your messy text with unwanted line breaks here...
+
+Example:
+This text has
+annoying line breaks
+and   extra   spaces   everywhere."
+                            ></textarea>
+                        </div>
+
+                        <div class="remover-options">
+                            <label class="option-checkbox">
+                                <input type="checkbox" id="remove-all-breaks" checked>
+                                <label for="remove-all-breaks">Remove all line breaks</label>
+                            </label>
+                            <label class="option-checkbox">
+                                <input type="checkbox" id="keep-paragraph-breaks">
+                                <label for="keep-paragraph-breaks">Keep only paragraph breaks</label>
+                            </label>
+                            <label class="option-checkbox">
+                                <input type="checkbox" id="trim-spaces" checked>
+                                <label for="trim-spaces">Trim extra white space</label>
+                            </label>
+                        </div>
+
+                        <div class="output-section">
+                            <label class="section-label" for="remover-output">Cleaned Text</label>
+                            <textarea
+                                id="remover-output"
+                                class="input-box"
+                                style="min-height: 200px;"
+                                readonly
+                                placeholder="Your cleaned text will appear here..."
+                            ></textarea>
+                            <button id="copy-remover-output" class="copy-button">
+                                <span>📋</span>
+                                <span>Copy Cleaned Text</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FAQ Section -->
+            <div class="faq-section">
+                <h2>How to Get Perfect Instagram Line Breaks</h2>
+                <div class="faq-grid">
+                    <div class="faq-item">
+                        <button class="faq-question">
+                            Why do my line breaks disappear on Instagram?
+                        </button>
+                        <div class="faq-answer">
+                            <p>Instagram's algorithm automatically removes extra line breaks and spaces to maintain a clean appearance. This is why your carefully formatted captions sometimes appear as one block of text. Our tool adds special invisible characters that Instagram respects, preserving your formatting.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <button class="faq-question">
+                            How to add spaces in an Instagram bio?
+                        </button>
+                        <div class="faq-answer">
+                            <p>To add spaces in your Instagram bio, type your bio with the desired formatting in our tool, then copy the formatted text. The invisible characters we add will force Instagram to recognize and display your line breaks correctly. This ensures your bio appears exactly as you want it to.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <button class="faq-question">
+                            What's the best Instagram caption length?
+                        </button>
+                        <div class="faq-answer">
+                            <p>Instagram captions can be up to 2,200 characters, but the optimal length is between 138-150 characters. This length ensures your caption isn't cut off in users' feeds while maintaining engagement. Use our AI Assistant to analyze your caption's readability and get suggestions!</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <button class="faq-question">
+                            How often should I post on Instagram?
+                        </button>
+                        <div class="faq-answer">
+                            <p>Consistency is key on Instagram. Most successful accounts post 1-2 times per day. However, quality always beats quantity. Focus on creating engaging, well-formatted captions rather than posting frequently with poor content. Our tools help you create professional-looking captions quickly!</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 CaptionFormatter.com - All rights reserved</p>
+        </div>
+    </footer>
+
+    <script>
+        (function() {
+            'use strict';
+
+            // DOM Elements
+            const tabs = document.querySelectorAll('.tab:not(.tab-disabled)');
+            const tabContents = document.querySelectorAll('.tab-content');
+
+            const instagramInput = document.getElementById('instagram-input');
+            const instagramOutput = document.getElementById('instagram-output');
+            const copyInstagramBtn = document.getElementById('copy-instagram-output');
+            const aiAssistant = document.getElementById('ai-assistant');
+            const aiLoading = document.getElementById('ai-loading');
+            const aiContent = document.getElementById('ai-content');
+
+            const removerInput = document.getElementById('remover-input');
+            const removerOutput = document.getElementById('remover-output');
+            const copyRemoverBtn = document.getElementById('copy-remover-output');
+            const removeAllBreaks = document.getElementById('remove-all-breaks');
+            const keepParagraphBreaks = document.getElementById('keep-paragraph-breaks');
+            const trimSpaces = document.getElementById('trim-spaces');
+
+            let aiDebounceTimer = null;
+
+            // Tab Switching
+            tabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    const targetTab = this.dataset.tab;
+
+                    tabs.forEach(t => t.classList.remove('tab-active'));
+                    this.classList.add('tab-active');
+
+                    tabContents.forEach(content => {
+                        content.classList.remove('tab-content-active');
+                        if (content.id === targetTab + '-tab') {
+                            content.classList.add('tab-content-active');
+                        }
+                    });
+                });
+            });
+
+            // Instagram Formatter - Real-time preview
+            instagramInput.addEventListener('input', function() {
+                const text = this.value;
+                const formatted = text.replace(/\n/g, '\n\u200B');
+                instagramOutput.textContent = formatted || '';
+
+                clearTimeout(aiDebounceTimer);
+                if (text.trim().length > 10) {
+                    aiLoading.classList.add('ai-loading-active');
+                    aiContent.classList.remove('ai-content-active');
+
+                    aiDebounceTimer = setTimeout(fetchAISuggestions, 1500, text);
+                } else {
+                    aiLoading.classList.remove('ai-loading-active');
+                    aiContent.classList.remove('ai-content-active');
+                }
+            });
+
+            // Fetch AI Suggestions
+            async function fetchAISuggestions(text) {
+                try {
+                    const response = await fetch('/api/get-ai-suggestions', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ text: text })
+                    });
+
+                    if (!response.ok) {
+                        throw new Error('AI service unavailable');
+                    }
+
+                    const data = await response.json();
+                    updateAIContent(data);
+                } catch (error) {
+                    console.log('AI Suggestions:', error.message);
+                    updateAIContent(getDefaultSuggestions(text));
+                } finally {
+                    aiLoading.classList.remove('ai-loading-active');
+                    aiContent.classList.add('ai-content-active');
+                }
+            }
+
+            function updateAIContent(data) {
+                const emojiContainer = document.getElementById('emoji-suggestions');
+                if (data.emojis && data.emojis.length > 0) {
+                    emojiContainer.innerHTML = data.emojis.map(emoji =>
+                        `<span class="emoji-chip">${emoji}</span>`
+                    ).join('');
+                }
+
+                if (data.readabilityScore) {
+                    document.getElementById('readability-score').textContent = data.readabilityScore;
+                }
+
+                if (data.cta) {
+                    document.getElementById('cta-suggestion').textContent = data.cta;
+                }
+            }
+
+            function getDefaultSuggestions(text) {
+                return {
+                    emojis: ['✨', '🚀', '💫', '⭐', '🔥'],
+                    readabilityScore: Math.floor(70 + Math.random() * 25),
+                    cta: 'Double tap if you agree! 💪'
+                };
+            }
+
+            // Copy Instagram Output
+            copyInstagramBtn.addEventListener('click', async function() {
+                const text = instagramOutput.textContent;
+                if (!text) {
+                    showFeedback(this, '⚠️ No text to copy');
+                    return;
+                }
+
+                try {
+                    await navigator.clipboard.writeText(text);
+                    showFeedback(this, '✅ Copied!');
+                } catch (err) {
+                    const textarea = document.createElement('textarea');
+                    textarea.value = text;
+                    document.body.appendChild(textarea);
+                    textarea.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(textarea);
+                    showFeedback(this, '✅ Copied!');
+                }
+            });
+
+            // Line Break Remover
+            function processRemoverText() {
+                let text = removerInput.value;
+
+                if (keepParagraphBreaks.checked) {
+                    text = text.replace(/\n\n+/g, '__PARA__');
+                    text = text.replace(/\n/g, ' ');
+                    text = text.replace(/__PARA__/g, '\n\n');
+                } else if (removeAllBreaks.checked) {
+                    text = text.replace(/\n+/g, ' ');
+                }
+
+                if (trimSpaces.checked) {
+                    text = text.replace(/\s+/g, ' ').trim();
+                }
+
+                removerOutput.value = text;
+            }
+
+            removerInput.addEventListener('input', processRemoverText);
+            removeAllBreaks.addEventListener('change', processRemoverText);
+            keepParagraphBreaks.addEventListener('change', processRemoverText);
+            trimSpaces.addEventListener('change', processRemoverText);
+
+            // Copy Remover Output
+            copyRemoverBtn.addEventListener('click', async function() {
+                const text = removerOutput.value;
+                if (!text) {
+                    showFeedback(this, '⚠️ No text to copy');
+                    return;
+                }
+
+                try {
+                    await navigator.clipboard.writeText(text);
+                    showFeedback(this, '✅ Copied!');
+                } catch (err) {
+                    const textarea = document.createElement('textarea');
+                    textarea.value = text;
+                    document.body.appendChild(textarea);
+                    textarea.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(textarea);
+                    showFeedback(this, '✅ Copied!');
+                }
+            });
+
+            // Button Feedback
+            function showFeedback(button, message) {
+                const originalHTML = button.innerHTML;
+                const originalText = button.querySelector('span:last-child').textContent;
+
+                button.querySelector('span:last-child').textContent = message;
+                button.classList.add('copied');
+
+                setTimeout(() => {
+                    button.querySelector('span:last-child').textContent = originalText;
+                    button.classList.remove('copied');
+                }, 2000);
+            }
+
+            // FAQ Accordion
+            const faqItems = document.querySelectorAll('.faq-item');
+            faqItems.forEach(item => {
+                const question = item.querySelector('.faq-question');
+                question.addEventListener('click', () => {
+                    const isActive = item.classList.contains('active');
+
+                    faqItems.forEach(i => i.classList.remove('active'));
+
+                    if (!isActive) {
+                        item.classList.add('active');
+                    }
+                });
+            });
+
+            // Emoji chip click to add to input
+            document.addEventListener('click', (e) => {
+                if (e.target.classList.contains('emoji-chip')) {
+                    const emoji = e.target.textContent;
+                    const cursorPosition = instagramInput.selectionStart;
+                    const currentValue = instagramInput.value;
+
+                    instagramInput.value = currentValue.slice(0, cursorPosition) +
+                        emoji + ' ' +
+                        currentValue.slice(cursorPosition);
+
+                    instagramInput.focus();
+                    instagramInput.dispatchEvent(new Event('input'));
+                }
+            });
+
+        })();
+    </script>
+</body>
+</html>
